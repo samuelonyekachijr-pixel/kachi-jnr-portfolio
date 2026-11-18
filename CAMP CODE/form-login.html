@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Back | Login</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    background: linear-gradient(135deg, #07152f, #174a82);
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 1050px;
+    min-height: 600px;
+    background: white;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(0,0,0,.3);
+    animation: fadeIn .8s ease;
+}
+
+/* SLIDESHOW */
+
+.photo-section {
+    position: relative;
+    min-height: 600px;
+    background: #102d50;
+    overflow: hidden;
+}
+
+.slides {
+    position: absolute;
+    inset: 0;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transform: scale(1.04);
+    transition: transform 6s linear;
+}
+
+.slide.active img {
+    transform: scale(1.13);
+}
+
+.photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(3,17,39,.96),
+        rgba(3,17,39,.05) 80%
+    );
+    z-index: 2;
+    pointer-events: none;
+}
+
+.photo-content {
+    position: absolute;
+    z-index: 3;
+    bottom: 65px;
+    left: 35px;
+    right: 30px;
+    color: white;
+    pointer-events: none;
+}
+
+.tag {
+    display: inline-block;
+    background: #f3c969;
+    color: #102847;
+    padding: 8px 13px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.photo-content h2 {
+    font-size: 34px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+
+.photo-content p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #e0e8f2;
+}
+
+/* SLIDE CONTROLS */
+
+.slide-controls {
+    position: absolute;
+    z-index: 5;
+    bottom: 25px;
+    left: 35px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.dot {
+    width: 9px;
+    height: 9px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255,255,255,.55);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.dot.active {
+    width: 28px;
+    background: #f3c969;
+}
+
+.arrow {
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: 50%;
+    background: rgba(5,20,40,.45);
+    color: white;
+    font-size: 23px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.arrow:hover {
+    background: #f3c969;
+    color: #102847;
+}
+
+.prev {
+    left: 15px;
+}
+
+.next {
+    right: 15px;
+}
+
+/* LOGIN FORM */
+
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 45px;
+}
+
+.login-content {
+    width: 100%;
+    max-width: 360px;
+}
+
+.logo {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #102d50;
+    color: #f3c969;
+    border-radius: 15px;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+h1 {
+    color: #102847;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #7a8797;
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: #26384d;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 9px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #dce2e9;
+    border-radius: 9px;
+    outline: none;
+    font-size: 14px;
+    background: #fbfcfe;
+    transition: .3s;
+}
+
+input:focus {
+    border-color: #1769d2;
+    box-shadow: 0 0 0 3px rgba(23,105,210,.1);
+    background: white;
+}
+
+.password-box {
+    position: relative;
+}
+
+.password-box input {
+    padding-right: 65px;
+}
+
+.show-password {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #1769d2;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0 25px;
+    font-size: 12px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #697789;
+    white-space: nowrap;
+}
+
+.remember input {
+    accent-color: #1769d2;
+}
+
+a {
+    text-decoration: none;
+    color: #1769d2;
+    font-weight: bold;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 9px;
+    background: #1769d2;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.login-btn:hover {
+    background: #102d50;
+    transform: translateY(-2px);
+}
+
+.message {
+    display: none;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.signup-link {
+    margin-top: 28px;
+    text-align: center;
+    color: #7a8797;
+    font-size: 13px;
+}
+
+.footer {
+    margin-top: 35px;
+    text-align: center;
+    color: #a0a8b3;
+    font-size: 11px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 750px) {
+    body {
+        padding: 15px;
+    }
+
+    .container {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+    }
+
+    .photo-section {
+        min-height: 320px;
+    }
+
+    .photo-content {
+        left: 25px;
+        right: 20px;
+        bottom: 65px;
+    }
+
+    .photo-content h2 {
+        font-size: 26px;
+    }
+
+    .slide-controls {
+        left: 25px;
+    }
+
+    .login-section {
+        padding: 35px 25px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 380px) {
+    .options {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+    <!-- AUTOMATIC PHOTO SLIDESHOW -->
+    <section class="photo-section" aria-label="Class photo slideshow">
+
+        <div class="slides" id="slides">
+
+            <!-- SLIDE 1: YOUR CLASS PHOTO -->
+            <div class="slide active">
+                <img src="img/van-tay-media-Hh-PIe3qIug-unsplash.jpg" alt="Our class group photograph">
+            </div>
+
+            <!-- SLIDE 2: REPLACE WITH YOUR OWN PHOTO -->
+            <div class="slide">
+                <img src="img/d1.jfif" alt="Class memories">
+            </div>
+
+            <!-- SLIDE 3: REPLACE WITH YOUR OWN PHOTO -->
+            <div class="slide">
+                <img src="img/d2.jfif" alt="School memories">
+            </div>
+        
+            <!-- SLIDE 4: REPLACE WITH YOUR OWN PHOTO -->
+            <div class="slide">
+                <img src="img/d3.jfif" alt="School memories">
+            </div>
+            
+            <!-- SLIDE 5: REPLACE WITH YOUR OWN PHOTO -->
+            <div class="slide">
+                <img src="img/Live button with play icon rendering _ Premium Photo.jfif" alt="School memories">
+            </div>
+
+            <!-- SLIDE 6: REPLACE WITH YOUR OWN PHOTO -->
+            <div class="slide">
+                <img src="img/digital-market.jpg" alt="School memories">
+            </div>
+        </div>
+
+        <div class="photo-overlay"></div>
+
+        <button class="arrow prev" id="prev"
+                type="button" aria-label="Previous image">&#8249;</button>
+
+        <button class="arrow next" id="next"
+                type="button" aria-label="Next image">&#8250;</button>
+
+        <div class="photo-content">
+            <span class="tag">OUR CLASS • OUR STORY</span>
+            <h2 id="slideTitle">Together We Learn.<br>Together We Grow.</h2>
+            <p id="slideDescription">
+                Welcome to our space. Sign in to continue
+                your journey and stay connected.
+            </p>
+        </div>
+
+        <div class="slide-controls" id="slideControls" aria-label="Choose slideshow image">
+            <button class="dot active" type="button" aria-label="Show image 1"></button>
+
+            <button class="dot" type="button" aria-label="Show image 2"></button>
+
+            <button class="dot" type="button" aria-label="Show image 3"></button>
+        </div>
+
+    </section>
+
+    <!-- LOGIN FORM -->
+    <section class="login-section">
+        <div class="login-content">
+
+            <!-- <div class="logo">W</div> -->
+
+            <h1>Welcome Back</h1>
+            <p class="subtitle">
+                Enter your details below to log in to your account.
+            </p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" 
+                    autocomplete="email" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-box">
+                        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
+
+                        <button type="button" class="show-password" id="togglePassword">Show</button>
+                    </div>
+                </div>
+
+                <div class="options">
+                    <label class="remember">
+                        <input type="checkbox" id="remember">
+                        Remember me
+                    </label>
+
+                    <a href="reset-password.html" id="forgotPassword">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">Log In</button>
+
+                <div class="message" id="message" role="status"></div>
+
+            </form>
+
+            <p class="signup-link">
+                Don't have an account?
+                <a href="Form.html">Sign Up</a> 
+            </p>
+
+            <p class="footer">
+                &copy; 2026 Our Class. All rights reserved.
+            </p>
+
+        </div>
+    </section>
+
+</main>
+
+<script>
+// SLIDESHOW
+const slides = document.querySelectorAll(".slide");
+const dots = document.querySelectorAll(".dot");
+const photoSection = document.querySelector(".photo-section");
+
+const titles = [
+    "Continue your Journey.<br>Together We Grow.",
+    "Create Memories",
+    "Cloud Your Important Files",
+    "Nostagilia.",
+    "Join Live Events",
+    "Create Ads"
+];
+
+const descriptions = [
+    "Welcome to our space. Sign in to continue your journey and stay connected.",
+    "Every moment together becomes a memory worth keeping.",
+    "Cloud Important Files and assets",
+    "We refresh Old memories",
+    "You can join Live events across the globe when you subscribe",
+    "You can run ads for your business"
+];
+
+let currentSlide = 0;
+let slideshowTimer;
+
+function showSlide(index) {
+    currentSlide = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === currentSlide);
+    });
+
+    dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentSlide);
+    });
+
+    document.getElementById("slideTitle").innerHTML =
+        titles[currentSlide];
+
+    document.getElementById("slideDescription").textContent =
+        descriptions[currentSlide];
+}
+
+function startSlideshow() {
+    clearInterval(slideshowTimer);
+
+    slideshowTimer = setInterval(() => {
+        showSlide(currentSlide + 1);
+    }, 5000);
+}
+
+document.getElementById("next").addEventListener("click", () => {
+    showSlide(currentSlide + 1);
+    startSlideshow();
+});
+
+document.getElementById("prev").addEventListener("click", () => {
+    showSlide(currentSlide - 1);
+    startSlideshow();
+});
+
+dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+        showSlide(index);
+        startSlideshow();
+    });
+});
+
+// Pause automatic changes while the pointer is over the photos.
+photoSection.addEventListener("mouseenter", () => {
+    clearInterval(slideshowTimer);
+});
+
+photoSection.addEventListener("mouseleave", startSlideshow);
+
+// Also support keyboard users and reduced-motion preferences.
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    startSlideshow();
+}
+
+photoSection.addEventListener("keydown", event => {
+    if (event.key === "ArrowRight") {
+        showSlide(currentSlide + 1);
+        startSlideshow();
+    }
+
+    if (event.key === "ArrowLeft") {
+        showSlide(currentSlide - 1);
+        startSlideshow();
+    }
+});
+
+// SHOW / HIDE PASSWORD
+const password = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", () => {
+    const show = password.type === "password";
+    password.type = show ? "text" : "password";
+    togglePassword.textContent = show ? "Hide" : "Show";
+});
+
+// LOGIN FORM
+const loginForm = document.getElementById("loginForm");
+const message = document.getElementById("message");
+
+function showMessage(text, background, color) {
+    message.style.display = "block";
+    message.style.background = background;
+    message.style.color = color;
+    message.textContent = text;
+}
+
+loginForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    showMessage(
+        "The form is valid, but real login requires a connected authentication backend.",
+        "#fff3cd",
+        "#765600"
+    );
+});
+
+document.getElementById("forgotPassword").addEventListener("click", event => {
+    event.preventDefault();
+
+    showMessage(
+        "Password reset requires a connected account system.",
+        "#e8f1ff",
+        "#174a82"
+    );
+});
+</script>
+
+</body>
+</html>
