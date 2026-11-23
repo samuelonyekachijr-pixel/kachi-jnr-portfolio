@@ -894,4 +894,33 @@ form button[type="submit"]:focus-visible {
         transform: none;
     }
 }
+.message-field {
+    display: grid;
+    gap: 8px;
+}
+
+.message-field label {
+    color: #142544;
+    font-weight: 600;
+}
+
+.message-field textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 14px;
+    border: 1px solid #cbd2dd;
+    border-radius: 8px;
+    background: #fff;
+    color: #142544;
+    font: inherit;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.message-field textarea:focus {
+    border-color: #142544;
+    outline: 2px solid #c59b32;
+    outline-offset: 2px;
+}
 
